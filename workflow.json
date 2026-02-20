@@ -1,0 +1,133 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1iRL-K6bXADvPPeQgvstVmv3B1K9Dok1m1eVKlE6-1I4",
+          "mode": "list",
+          "cachedResultName": "Content_Factory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iRL-K6bXADvPPeQgvstVmv3B1K9Dok1m1eVKlE6-1I4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Con_Fac",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iRL-K6bXADvPPeQgvstVmv3B1K9Dok1m1eVKlE6-1I4/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8f633ef7-f02a-42ff-b454-48f1e4279e4e",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "ogTzYHOnlo00phN8",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "Ты крутой SMM-менеджер. Пиши вовлекающие посты."
+            },
+            {
+              "content": "=Сделай пост по этой ссылке: {{ $json.URL }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "28915caf-eeca-45e0-b0d7-c205dda463f9",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "q7iznvalbmwcsKqX",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "@Zero_ABV_invest",
+        "text": "={{ $json.output[0].content[0].text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "85f6d027-e606-44ab-9a5c-92517181f6c5",
+      "name": "Send a text message",
+      "webhookId": "4be9d75b-5221-44b7-aaab-9d15fcd5aecd",
+      "credentials": {
+        "telegramApi": {
+          "id": "T6NPgEuPy0jkZnQu",
+          "name": "Unnamed credential"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2942d9d2e89a2abc1536eccf9e6bf08dd21d68f3bbf6c55256348e9ccf5b712d"
+  }
+}
